@@ -2,14 +2,14 @@ require('dotenv').config()
 
 const Discord = require('discord.js')
 const client = new Discord.Client({
-    partials: []
+    partials: ['MESSAGE']
 })
 const PREFIX = '!'
 
 client.on('ready', () => {
-    console.log('Sbot is ready to roll!!!!!')
-})
-
+        console.log('Sbot is ready to roll!!!!!')
+    })
+    /////////////////////////////////////////
 client.on('message', msg => {
     if (msg.content === '!HelloBot') {
         msg.react('😄')
@@ -30,5 +30,5 @@ client.on('messageDelete', msg => {
     msg.channel.send('Stop ITTTTT')
 })
 
-
+////////////////////////////////////
 client.login(process.env.BOT_TOKEN)
