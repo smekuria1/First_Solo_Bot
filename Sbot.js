@@ -5,7 +5,7 @@ const client = new Discord.Client()
 const PREFIX = '!'
 
 client.on('ready', () => {
-    console.log('Sbot is ready to go!!!!@')
+    console.log('Sbot is ready to roll!!!!!')
 })
 
 client.on('message', msg => {
