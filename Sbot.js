@@ -22,8 +22,9 @@ client.on('message', msg => {
         msg.member.roles.add('828080939778179072')
     }
     if (msg.member.deleted) {
-        msg.channel.send { "STOP IT!!!" }
+        msg.channel.send("STOP IT!!!")
     }
+
 })
 
 
