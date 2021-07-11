@@ -1,7 +1,9 @@
 require('dotenv').config()
 
 const Discord = require('discord.js')
-const client = new Discord.Client()
+const client = new Discord.Client({
+    partials: []
+})
 const PREFIX = '!'
 
 client.on('ready', () => {
@@ -21,10 +23,11 @@ client.on('message', msg => {
     if (msg.content === '!new') {
         msg.member.roles.add('828080939778179072')
     }
-    if (msg.member.deleted) {
-        msg.channel.send("STOP IT!!!")
-    }
 
+})
+
+client.on('messageReactionAdd', msg => {
+    msg.react('🐺')
 })
 
 
