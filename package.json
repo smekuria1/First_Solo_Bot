@@ -1,0 +1,21 @@
+{
+    "name": "SoloBot",
+    "version": "1.0.0",
+    "description": "",
+    "main": "Sbot.js",
+    "scripts": {
+        "start": "node Sbot.js",
+        "devStart": "nodemon bot.js"
+
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "discord.js": "^12.5.3",
+        "dotenv": "^10.0.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.12"
+    }
+}
