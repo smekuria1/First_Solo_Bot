@@ -26,8 +26,8 @@ client.on('message', msg => {
 
 })
 
-client.on('messageReactionAdd', msg => {
-    msg.react('🐺')
+client.on('messageDelete', msg => {
+    msg.channel.send('Stop ITTTTT')
 })
 
 
