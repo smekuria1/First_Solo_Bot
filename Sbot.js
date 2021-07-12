@@ -4,6 +4,8 @@ const Discord = require('discord.js')
 const client = new Discord.Client({
     partials: ['MESSAGE']
 })
+
+const fs = require('fs')
 const PREFIX = '!'
 
 client.on('ready', () => {
@@ -12,7 +14,7 @@ client.on('ready', () => {
     /////////////////////////////////////////
 client.on('message', msg => {
     if (msg.content === '!HelloBot') {
-        msg.react('😄')
+        msg.react('🌭')
         msg.reply('Hello')
     }
 })
@@ -28,6 +30,31 @@ client.on('message', msg => {
 
 client.on('messageDelete', msg => {
     msg.channel.send('Stop ITTTTT')
+})
+
+client.on('message', message => {
+    client.functions = new Discord.Collection()
+
+    const functionFiles = fs.readdirSync('./functions/').filter(file => file.endsWith('js'))
+
+    for (const file of functionFiles) {
+        const command = require(`./functions/${file}`)
+        client.functions.set(command.name, command)
+    }
+    //Checking for commands
+    //Basic reqs prefix and not bot
+    //might add mod only commands with .member
+    if (!message.content.startsWith(PREFIX) || message.author.bot) return
+
+    var arg = message.content.slice(1).trim().split(' ')
+    var command = arg.shift().toLowerCase()
+    var finalarg = arg.toString()
+
+    if (command == 'description') {
+        client.commands.get('descrption').execute(message)
+    }
+
+
 })
 
 ////////////////////////////////////
