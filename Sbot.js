@@ -51,7 +51,7 @@ client.on('message', message => {
     var finalarg = arg.toString()
 
     if (command == 'description') {
-        client.commands.get('descrption').execute(message)
+        client.functions.get('descrption').execute(message)
     }
 
 
