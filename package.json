@@ -6,7 +6,6 @@
     "scripts": {
         "start": "node Sbot.js",
         "devStart": "nodemon bot.js"
-
     },
     "keywords": [],
     "author": "",
