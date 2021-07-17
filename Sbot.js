@@ -9,6 +9,7 @@
  const { PREFIX } = require('./config.json')
  const commands = require('./commands')
  const sendFirst = require('./sendFirst')
+ const getRole = require('./get-role')
 
  client.on('ready', () => {
      console.log('Sbot is ready to roll!!!!!')
@@ -155,7 +156,7 @@
      // })
 
 
-     sendFirst(client, '865307016561295420', 'React Role', ['😀', '😂'])
+     getRole(client)
 
 
  })
