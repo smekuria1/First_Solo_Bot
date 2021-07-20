@@ -2,46 +2,21 @@
 
  const Discord = require('discord.js')
  const client = new Discord.Client({
-     partials: ['MESSAGE']
- })
-
- const fs = require('fs')
+         partials: ['MESSAGE']
+     })
+     ////////////Imports
+     //const fs = require('fs')
  const { PREFIX } = require('./config.json')
  const commands = require('./commands')
  const sendFirst = require('./sendFirst')
  const getRole = require('./get-role')
 
+
+ ///////////Start Bot
  client.on('ready', () => {
      console.log('Sbot is ready to roll!!!!!')
 
-
-
-
-
-
-
      /////////////////////////////////////////
-     client.on('message', msg => {
-         if (msg.content === '!HelloBot') {
-             msg.react('🌭')
-             msg.reply('Hello')
-         }
-     })
-
-     client.on('message', msg => { //role assigner
-         if (msg.content === "!noob-role")
-             msg.member.roles.add('863806919386464286')
-         if (msg.content === '!new') {
-             msg.member.roles.add('828080939778179072')
-         }
-
-     })
-
-     client.on('messageDelete', msg => { //message deletion
-
-         msg.channel.send('Stop deleting messages!!!')
-
-     })
 
      ///////////////////////////  Refactored command handler
 
@@ -67,30 +42,65 @@
      //      //////////////////////////////////////////////
 
 
+     /////Event Handlers
+     client.on('messageDelete', msg => { //message deletion
+
+         msg.channel.send('Stop deleting messages!!!')
+
+     })
+
+
      /////Command Handler Commands 
+
+     ///////Reply+React
+     commands(client, ['Hello', 'HelloBot', 'HiBot'], message => {
+             message.reply('Hello\n\n Please stop talking to me 😎')
+             message.react('🖕')
+         })
+         //LOLOLOLOLOLOLOLOLOLOL
      commands(client, 'nice', message => {
          message.channel.send('COCK')
          message.react('🐓')
 
      })
 
-
-     commands(client, 'servers', message => {
+     ///////Returns the nummber of members in the server
+     commands(client, 'members', message => {
          client.guilds.cache.forEach((guild) => {
              message.channel.send(`${guild.name} has a total of ${guild.memberCount} members`)
          })
      })
 
-     commands(client, ['cc', 'clearChannel'], message => {
-         if (message.member.hasPermission('ADMINSTRATOR')) {
-             message.channel.messages.fetch().then(messages => {
-                 message.channel.bulkDelete(messages).catch(err => Promise.reject(err))
-             })
+
+
+     ///////Clear channel text in the past 14days
+     commands(client, ['cc', 'clearchannel'], message => {
+
+         ///////Admin permission required
+         const { member } = message
+         if (!member.hasPermission(`ADMINISTRATOR`)) {
+             return
          }
+
+         /// async function to catch Discord API promise rejection error message older than 14days
+         /// To DO: Improve Error message 
+         async function purge() {
+             //message.delete()
+
+             message.channel.messages.fetch().then(messages => {
+                 message.channel.bulkDelete(messages).catch(err => message.channel.send(`Error: ${err}`))
+             })
+
+         }
+
+         purge()
+
      })
 
 
-
+     ///////Sets bot status
+     //////TO DO: Owner only command??
+     //////Research status if guild specific 
      commands(client, 'setStatus', message => {
          const content = message.content.replace('!setStatus ', '')
 
@@ -103,19 +113,25 @@
          })
      })
 
-     commands(client, 'createtextchannel', (message) => {
-         const name = message.content.replace('!createtextchannel ', '')
 
-         message.guild.channels.create(name, {
-             type: 'text'
-         }).then((channel) => {
-             const catId = '757709695157928037'
-             channel.setParent(catId)
+     //////// Creates text channel 
+     /////// Bot ONLY????
+     ////// Category ID from config to make bot scaleable
+     commands(client, 'createtextchannel', (message) => {
+             const name = message.content.replace('!createtextchannel ', '')
+
+             message.guild.channels.create(name, {
+                 type: 'text'
+             }).then((channel) => {
+                 const catId = '757709695157928037'
+                 channel.setParent(catId)
+
+             })
 
          })
-
-     })
-
+         //////// Creates voice channel 
+         /////// Bot ONLY????
+         ////// Category ID from config to make bot scaleable
      commands(client, 'createvoicechannel', (message) => {
          const name = message.content.replace('!createvoicechannel ', '')
 
@@ -130,7 +146,7 @@
 
      })
 
-
+     ///////Reply embeded link to Source code
      commands(client, 'github', (message) => {
          const embed = new Discord.MessageEmbed()
              .setTitle("GitHub")
@@ -140,23 +156,32 @@
 
      })
 
-
+     ///////Replies with a breif description
+     //////TO DO: Add more description
      commands(client, ['description', 'desc'], (message) => {
          message.reply("This bot is a personal project designed by Solomon.\nType !help to get a list of commands")
 
      })
 
-     //  client.on('message', msg => { //role assigner
-     //     if (msg.content === "!noob-role")
-     //         msg.member.roles.add('863806919386464286')
-     //     if (msg.content === '!new') {
-     //         msg.member.roles.add('828080939778179072')
-     //     }
 
-     // })
-
-
+     /////Role reaction
      getRole(client)
+
+
+     //////Replies with a set of available commands 
+     commands(client, ['Help', 'help'], (message) => {
+         message.reply("This bot is in trial phase some commands might produce some errors,  Type !github to report error\n\n" +
+             "> !Hello,HelloBot,HiBot: Reply with a nice message and reacts with cute emoji\n\n" +
+             "> !members: Reply with server name and number of members\n\n" +
+             "> !cc,clearchannel: Deletes message for the channel(only for messages sent in the past 2weeks\n\n" +
+             "> !createtextchannel (name): Creates text channel in the text channel catergory with (name)\n\n" +
+             "> !createvoicechannel (name): Creates voice channel in the voice channel catergory with (name)\n\n" +
+             "> !setStatus (status): Set the bots status to (name)\n\n" +
+             " > !github: Send and message embeded with link to source code/github repo\n\n" +
+             " > !desc,description: Replies with a breif description about the bot and the developer and resources")
+
+     })
+
 
 
  })
