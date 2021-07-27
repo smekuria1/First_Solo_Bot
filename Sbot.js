@@ -10,6 +10,9 @@
  const commands = require('./commands')
  const sendFirst = require('./sendFirst')
  const getRole = require('./get-role')
+ const SC_CIENT_ID = process.env.SC_CIENT_ID
+ const scdl = require('soundcloud-downloader').default
+
 
 
  ///////////Start Bot
@@ -45,6 +48,7 @@
      /////Event Handlers
      client.on('messageDelete', msg => { //message deletion
 
+         if (msg.author.bot) return
          msg.channel.send('Stop deleting messages!!!')
 
      })
@@ -168,9 +172,12 @@
      getRole(client)
 
 
-     //////Replies with a set of available commands 
+     //////Replies(dm) with a set of available commands 
      commands(client, ['Help', 'help'], (message) => {
-         message.reply("This bot is in trial phase some commands might produce some errors,  Type !github to report error\n\n" +
+         message.reply('Dming you the commands').then(message => {
+             setTimeout(() => message.delete(), 10000)
+         })
+         message.author.send("This bot is in trial phase some commands might produce some errors,  Type !github to report error\n\n" +
              "> !Hello,HelloBot,HiBot: Reply with a nice message and reacts with cute emoji\n\n" +
              "> !members: Reply with server name and number of members\n\n" +
              "> !cc,clearchannel: Deletes message for the channel(only for messages sent in the past 2weeks\n\n" +
@@ -181,6 +188,36 @@
              " > !desc,description: Replies with a breif description about the bot and the developer and resources")
 
      })
+
+
+     /////////////SoundCloud Integration Starts
+
+     commands(client, "play", (message) => {
+         const url = message.content.replace('!play ', '')
+         const regex = new RegExp('^(?:(https?):\/\/)?(?:(?:www|m)\.)?(soundcloud\.com)\/(.*)$')
+         const chanelId = '869264453055676426'
+         const channel = client.channels.cache.get(chanelId)
+             //  if (!message.member.voiceChannel) return message.channel.send("Please join voice channel")
+
+         //  if (message.guild.bot.voiceChannel) message.channel.send('Join voice channel')
+
+
+         if (regex.test(url)) {
+             channel.join().then(connection => {
+                 scdl.download(url).catch(err => message.channel.send(`Error: ${err}`)).then(stream => {
+                     connection.play(stream)
+                 })
+             })
+         } else {
+             message.delete()
+             return message.channel.send('Please enter a valid link to the song')
+         }
+
+     })
+
+
+
+
 
 
 
