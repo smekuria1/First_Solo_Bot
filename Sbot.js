@@ -1,22 +1,27 @@
  require('dotenv').config()
+ require('events').EventEmitter.prototype._maxListeners = 100;
 
  const Discord = require('discord.js')
  const client = new Discord.Client({
          partials: ['MESSAGE']
      })
      ////////////Imports
-     //const fs = require('fs')
+ const fs = require('fs')
  const { PREFIX } = require('./config.json')
  const commands = require('./commands')
  const sendFirst = require('./sendFirst')
  const getRole = require('./get-role')
  const SC_CIENT_ID = process.env.SC_CIENT_ID
  const scdl = require('soundcloud-downloader').default
+ require('events').EventEmitter.prototype._maxListeners = 100;
 
 
+ process.on('unhandledRejection', (reason, promise) => {
+     console.error(`Unhandled Rejection at: ${promise} reason: ${reason}`);
+ });
 
  ///////////Start Bot
- client.on('ready', () => {
+ client.once('ready', () => {
      console.log('Sbot is ready to roll!!!!!')
 
      /////////////////////////////////////////
@@ -192,7 +197,7 @@
 
      /////////////SoundCloud Integration Starts
 
-     commands(client, "play", (message) => {
+     commands(client, 'play', (message) => {
          const url = message.content.replace('!play ', '')
          const regex = new RegExp('^(?:(https?):\/\/)?(?:(?:www|m)\.)?(soundcloud\.com)\/(.*)$')
          const chanelId = '869264453055676426'
@@ -201,17 +206,22 @@
 
          //  if (message.guild.bot.voiceChannel) message.channel.send('Join voice channel')
 
-
-         if (regex.test(url)) {
-             channel.join().then(connection => {
-                 scdl.download(url).catch(err => message.channel.send(`Error: ${err}`)).then(stream => {
-                     connection.play(stream)
+         async function play() {
+             if (regex.test(url)) {
+                 channel.join().then(connection => {
+                     scdl.download(url).catch(err =>
+                         console.log(`${err}`)).then(stream => {
+                         connection.play(stream).catch(err =>
+                             console.log(`${err}`))
+                     })
                  })
-             })
-         } else {
-             message.delete()
-             return message.channel.send('Please enter a valid link to the song')
+             } else {
+                 //message.delete()
+                 return message.channel.send('Please enter a valid link to the song')
+             }
          }
+
+         play()
 
      })
 

@@ -1,4 +1,7 @@
 const { PREFIX } = require('./config.json')
+require('events').EventEmitter.prototype._maxListeners = 100;
+
+
 
 
 module.exports = (client, aliases, functions) => {
