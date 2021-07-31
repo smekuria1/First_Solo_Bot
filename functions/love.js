@@ -7,8 +7,6 @@ module.exports = {
     callback: (message, arguments, text) => {
         message.reply(`I love ${arguments}`)
     },
-    requiredRoles: [''],
-    permissions: ['']
 
 
 }

@@ -10,7 +10,7 @@ const validatePerm = (permissions) => {
     }
 }
 
-module.exports = (client, commandOpt) => {
+module.exports = (client, commandOptions) => {
     let {
         commands,
         expectedArgs = '',
@@ -20,7 +20,7 @@ module.exports = (client, commandOpt) => {
         permissions = [],
         requiredRoles = [],
         callback
-    } = commandOpt
+    } = commandOptions
     ///convert command and aliase into array
     if (typeof commands === 'string') {
         commands = [commands]

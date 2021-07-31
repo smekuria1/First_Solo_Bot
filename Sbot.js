@@ -8,13 +8,12 @@
      ////////////Imports
  const path = require('path')
  const fs = require('fs')
- const { PREFIX } = require('./config.json')
+     //  const { PREFIX } = require('./config.json')
      //const commands = require('./commands')
      //const sendFirst = require('./sendFirst')
      //const getRole = require('./get-role')
      //const SC_CIENT_ID = process.env.SC_CIENT_ID
      //const scdl = require('soundcloud-downloader').default
- require('events').EventEmitter.prototype._maxListeners = 100;
 
 
  process.on('unhandledRejection', (reason, promise) => {
@@ -22,22 +21,17 @@
  });
 
  ///////////Start Bot
- client.once('ready', () => {
-         console.log('Sbot is ready to roll!!!!!')
-     })
-     ///////////////////////////////////////
+ client.on('ready', async() => {
+     console.log('Sbot is ready to roll!!!!!')
 
- /////////////////////////  Refactored command handler
-
- client.on('message', message => {
      const baseFile = 'command-base.js'
-     const commandBase = require(`./functions/${baseFile}`)
+     const commandBase = require(`./functions/command-base.js`)
 
      //recusive loop to read all commands 
      const readCommands = dir => {
          const files = fs.readdirSync(path.join(__dirname, dir))
          for (const file of files) {
-             const stat = fs.lstatSync(path.join(__dirname, dir))
+             const stat = fs.lstatSync(path.join(__dirname, dir, file))
              if (stat.isDirectory()) {
                  readCommands(path.join(dir, file))
              } else if (file !== baseFile) {
