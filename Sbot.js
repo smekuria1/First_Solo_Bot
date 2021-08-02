@@ -10,8 +10,8 @@
  const fs = require('fs')
      //  const { PREFIX } = require('./config.json')
      //const commands = require('./commands')
-     //const sendFirst = require('./sendFirst')
-     //const getRole = require('./get-role')
+ const sendFirst = require('./sendFirst')
+ const getRole = require('./get-role')
      //const SC_CIENT_ID = process.env.SC_CIENT_ID
      //const scdl = require('soundcloud-downloader').default
 
@@ -36,7 +36,7 @@
                  readCommands(path.join(dir, file))
              } else if (file !== baseFile) {
                  const option = require(path.join(__dirname, dir, file))
-                 console.log(file, option)
+                     //console.log(file, option)
 
                  commandBase(client, option)
 
@@ -49,44 +49,47 @@
 
 
 
+     /////Role reaction
+     getRole(client)
 
 
 
 
 
 
-
-
-
-
-
-     //  client.functions = new Discord.Collection()
-
-     //  const functionFiles = fs.readdirSync('./functions/').filter(file => file.endsWith('js'))
-
-     //  for (const file of functionFiles) {
-     //      const command = require(`./functions/${file}`)
-     //      client.functions.set(command.name, command)
-     //  }
-     //  //Checking for commands
-     //  //Basic reqs prefix and not bot
-     //  //might add mod only commands with .member
-     //  if (!message.content.startsWith(PREFIX) || message.author.bot) return
-
-     //  var arg = message.content.slice(PREFIX.length).trim().split(' ')
-     //  var command = arg.shift().toLowerCase()
-     //  var finalarg = arg.toString()
-
-
-     //  for (const file of functionFiles) {
-     //      const splitter
-     //  }
 
 
 
 
 
  })
+
+
+ //  client.functions = new Discord.Collection()
+
+ //  const functionFiles = fs.readdirSync('./functions/').filter(file => file.endsWith('js'))
+
+ //  for (const file of functionFiles) {
+ //      const command = require(`./functions/${file}`)
+ //      client.functions.set(command.name, command)
+ //  }
+ //  //Checking for commands
+ //  //Basic reqs prefix and not bot
+ //  //might add mod only commands with .member
+ //  if (!message.content.startsWith(PREFIX) || message.author.bot) return
+
+ //  var arg = message.content.slice(PREFIX.length).trim().split(' ')
+ //  var command = arg.shift().toLowerCase()
+ //  var finalarg = arg.toString()
+
+
+ //  for (const file of functionFiles) {
+ //      const splitter
+ //  }
+
+
+
+
 
  ///////////////////////////////////////////////
  //////////////////////////////////////////////
@@ -95,7 +98,6 @@
  /////Event Handlers
  //  client.on('messageDelete', msg => { //message deletion
 
- //      if (msg.author.bot) return
  //      msg.channel.send('Stop deleting messages!!!')
 
  //  })
