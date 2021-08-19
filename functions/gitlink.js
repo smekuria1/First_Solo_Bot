@@ -10,7 +10,7 @@ module.exports = {
             .setTitle("GitHub")
             .setURL('https://github.com/smekuria1/First_Solo_Bot')
             .setAuthor(message.author.username)
-        message.channel.reply(embed)
+        message.reply(embed)
     },
 
 

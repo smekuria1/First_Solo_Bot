@@ -10,15 +10,15 @@
  const fs = require('fs')
      //  const { PREFIX } = require('./config.json')
      //const commands = require('./commands')
- const sendFirst = require('./sendFirst')
+     //const sendFirst = require('./sendFirst')
  const getRole = require('./get-role')
      //const SC_CIENT_ID = process.env.SC_CIENT_ID
      //const scdl = require('soundcloud-downloader').default
 
 
- process.on('unhandledRejection', (reason, promise) => {
-     console.error(`Unhandled Rejection at: ${promise} reason: ${reason}`);
- });
+ //  process.on('unhandledRejection', (reason, promise) => {
+ //      console.error(`Unhandled Rejection at: ${promise} reason: ${reason}`);
+ //  });
 
  ///////////Start Bot
  client.on('ready', async() => {
