@@ -8,7 +8,7 @@ module.exports = {
     minArgs: 1,
     maxArgs: 1,
     callback: (message, arguments, text) => {
-        const { channel } = message
+
         axios.get('https://learntocodewith.me/posts/programming-books/', {
             headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)' }
         }).then((response) => {
